@@ -48,7 +48,7 @@ def read_workbook(name: str):
 
 def fill_xl_student(result: dict):
     wb = load_workbook(result['group'])
-    ws = copy_sheet_from_template(wb, 'Шаблон', result['second_name'])
+    ws = copy_sheet_from_template(wb, 'Шаблон', result['second_name']+' '+result['first_name'])
     for i, position in enumerate(result['positions'], start=4):
         ws[f"A{i}"] = position['title']
         ws[f"B{i}"] = position['price']

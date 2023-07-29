@@ -1,6 +1,7 @@
 import streamlit as st
 from backend import fill_xl_student, read_workbook
 from config import *
+
 st.title('Л2Ш Заказ одежды')
 
 first_name = st.text_input('Имя ребенка')
@@ -13,7 +14,6 @@ with col1:
     group_num = st.selectbox('Класс:', range(6, 12))
 with col2:
     group_letter = st.selectbox('Буква', ["А", "Б", "В", "Г", "Д", "Е"])
-
 
 result = {'group': str(group_num) + group_letter, 'first_name': first_name, 'second_name': second_name,
           'third_name': third_name}
@@ -35,9 +35,8 @@ for cloth in clothes:
 result['positions'] = positions
 if st.button('Отправить форму'):
     fill_xl_student(result)
-
-
-st.download_button(label=f'Скачать Excel таблицу ({second_name})',
-                   data=read_workbook(result['group']),
-                   file_name=f"{result['group']}.xlsx",
-                   mime='application/octet-stream')
+    st.text('Пожалуйста, скачайте файл и проверьте, что данные записались верно')
+    st.download_button(label=f'Скачать Excel таблицу ({second_name})',
+                       data=read_workbook(result['group']),
+                       file_name=f"{result['group']}.xlsx",
+                       mime='application/octet-stream')
