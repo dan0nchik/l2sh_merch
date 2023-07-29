@@ -161,3 +161,4 @@ cython_debug/
 202*
 data
 data.zip
+env.py

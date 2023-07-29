@@ -1,13 +1,13 @@
-import os
-
-import streamlit as st
-from backend import fill_xl_student, read_workbook, FOLDER
-from config import *
-from password import *
 import shutil
 
-st.title('Л2Ш Заказ одежды')
+import streamlit as st
 
+from backend import fill_xl_student, read_workbook
+from config import *
+from password import *
+
+st.title('Л2Ш Заказ одежды')
+st.text(os.listdir(os.getcwd()))
 first_name = st.text_input('Имя ребенка').replace(' ', '')
 second_name = st.text_input('Фамилия ребенка').replace(' ', '')
 
@@ -63,6 +63,7 @@ if st.checkbox('Я администратор'):
                                data=fp,
                                file_name='data.zip',
                                mime="application/zip")
+
 
 
 
