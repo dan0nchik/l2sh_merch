@@ -8,13 +8,13 @@ xl_size_pos = {}
 for size, letter in zip(sizes[1:], size_letters):
     xl_size_pos[size] = letter
 
-FOLDER = str(datetime.today().year)
-if FOLDER not in os.listdir(os.getcwd()):
-    os.mkdir(FOLDER)
+FOLDER = os.path.join(os.getcwd(), 'data', str(datetime.today().year))
+if not os.path.exists(FOLDER):
+    os.makedirs(FOLDER)
 
 
 def get_path(name):
-    return os.path.join(os.getcwd(), FOLDER, f"{name}.xlsx")
+    return os.path.join(FOLDER, f"{name}.xlsx")
 
 
 def copy_sheet_from_template(wb, template_name, sheet_name):
