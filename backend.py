@@ -13,6 +13,10 @@ if FOLDER not in os.listdir(os.getcwd()):
     os.mkdir(FOLDER)
 
 
+def get_path(name):
+    return os.path.join(os.getcwd(), FOLDER, f"{name}.xlsx")
+
+
 def copy_sheet_from_template(wb, template_name, sheet_name):
     source = wb[template_name]
     if sheet_name in wb.sheetnames:
@@ -24,22 +28,22 @@ def copy_sheet_from_template(wb, template_name, sheet_name):
 
 
 def load_workbook(name: str):
-    path = os.path.join(os.getcwd(), FOLDER, f"{name}.xlsx")
-    if not os.path.exists(path):
+    if not os.path.isfile(get_path(name)):
         wb = openpyxl.load_workbook('template_full.xlsx')
-        wb.save(path)
+        wb.save(get_path(name))
         wb.close()
-    return openpyxl.load_workbook(path)
+    return openpyxl.load_workbook(get_path(name))
 
 
 def save_workbook(wb, name: str):
-    wb.save(os.path.join(os.getcwd(), FOLDER, f"{name}.xlsx"))
+    wb.save(get_path(name))
     wb.close()
 
 
 def read_workbook(name: str):
-    with open(os.path.join(os.getcwd(), FOLDER, f"{name}.xlsx"), "rb") as template_file:
-        return template_file.read()
+    if os.path.isfile(get_path(name)):
+        with open(get_path(name), "rb") as template_file:
+            return template_file.read()
 
 
 def fill_xl_student(result: dict):
