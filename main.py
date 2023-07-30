@@ -7,7 +7,6 @@ from backend import fill_xl_student, read_workbook, FOLDER, fill_xl_group
 from config import *
 from password import *
 st.title('Л2Ш Заказ одежды')
-
 second_name = st.text_input('Фамилия ребенка').replace(' ', '')
 first_name = st.text_input('Имя ребенка').replace(' ', '')
 
@@ -37,16 +36,16 @@ for cloth in clothes:
     positions.append(position)
 result['positions'] = positions
 
+st.header(':exclamation:Внимание:exclamation: Форму можно отправить только один раз:exclamation:')
 
 if len(first_name) > 0 and len(second_name) > 0:
     pwd = st.text_input('Введите пароль: ', type='password')
     login_success = st.button('Отправить форму')
     if login_success:
         if check_user_password(pwd):
-            print(result)
             fill_xl_student(result)
             fill_xl_group(result)
-            st.text('Пожалуйста, скачайте файл и проверьте, что Ваши данные записались верно')
+            st.subheader('Пожалуйста, скачайте файл и проверьте, что Ваш заказ правильно записался в общую таблицу')
             st.download_button(label=f'Скачать Excel таблицу ({second_name})',
                                data=read_workbook(result['group']),
                                file_name=f"{result['group']}.xlsx",
@@ -60,7 +59,6 @@ else:
 if st.checkbox('Я администратор'):
     admin_pass = st.text_input('Введите пароль: ', type='password', key='admin')
     if check_admin_password(admin_pass):
-        st.text(os.listdir(FOLDER))
         st.text(os.listdir(os.getcwd()))
 
         file_name = st.selectbox('Выберите год: ', [str(i) for i in range(2023, 2030)])
@@ -71,3 +69,9 @@ if st.checkbox('Я администратор'):
                                    data=fp,
                                    file_name=f'{file_name}.zip',
                                    mime="application/zip")
+        file = st.selectbox('Выберите файл: ', os.listdir(os.getcwd()))
+        if st.button('Удалить'):
+            if os.path.isdir(file):
+                shutil.rmtree(file)
+            os.remove(file)
+            st.toast(f'Файл {file} удален!')
