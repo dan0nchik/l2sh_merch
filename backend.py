@@ -29,7 +29,7 @@ def copy_sheet_from_template(wb, template_name, sheet_name):
 
 
 def load_workbook(name: str):
-    if not os.path.isfile(get_path(name)):
+    if not os.path.exists(get_path(name)):
         wb = openpyxl.load_workbook('template_full.xlsx')
         wb.save(get_path(name))
         wb.close()
@@ -41,14 +41,19 @@ def save_workbook(wb, name: str):
     wb.close()
 
 
+def delete_workbook(name: str):
+    if os.path.exists(get_path(name)):
+        os.remove(get_path(name))
+
+
 def read_workbook(name: str):
-    if os.path.isfile(get_path(name)):
+    if os.path.exists(get_path(name)):
         with open(get_path(name), "rb") as template_file:
             return template_file.read()
 
 
 def fill_xl_student(result: dict):
-    wb = load_workbook(result['group'])
+    wb = load_workbook(result['second_name'])
     ws = copy_sheet_from_template(wb, 'Шаблон', result['second_name'] + ' ' + result['first_name'])
     for i, position in enumerate(result['positions'], start=4):
         ws[f"A{i}"] = position['title']
@@ -65,7 +70,7 @@ def fill_xl_student(result: dict):
     ws[f"N{l + 5}"] = f"=SUM(N{1}:N{l + 4})"
     ws[f"M{l + 5}"] = f"Итого: "
 
-    save_workbook(wb, result['group'])
+    save_workbook(wb, result['second_name'])
 
 
 def fill_xl_group(result: dict):
